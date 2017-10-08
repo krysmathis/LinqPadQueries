@@ -1,0 +1,68 @@
+http://stackoverflow.com/questions/12667415/determine-if-string-has-all-unique-characters
+
+bool[] array = new bool[256]; // or larger for Unicode
+
+foreach (char value in text)
+  if (array[(int)value])
+    return false;
+  else
+    array[(int)value] = true;
+
+return true; 
+
+http://stackoverflow.com/questions/756055/listing-all-permutations-of-a-string-integer
+//this one too
+
+static IEnumerable<IEnumerable<T>>
+    GetPermutations<T>(IEnumerable<T> list, int length)
+{
+    if (length == 1) return list.Select(t => new T[] { t });
+
+    return GetPermutations(list, length - 1)
+        .SelectMany(t => list.Where(e => !t.Contains(e)),
+            (t1, t2) => t1.Concat(new T[] { t2 }));
+}
+
+
+//then this...
+
+
+class Program
+{
+    private static void Swap(ref char a, ref char b)
+    {
+        if (a == b) return;
+
+        a ^= b;
+        b ^= a;
+        a ^= b;
+    }
+
+    public static void GetPer(char[] list)
+    {
+        int x = list.Length - 1;
+        GetPer(list, 0, x);
+    }
+
+    private static void GetPer(char[] list, int k, int m)
+    {
+        if (k == m)
+        {
+            Console.Write(list);
+        }
+        else
+            for (int i = k; i <= m; i++)
+            {
+                   Swap(ref list[k], ref list[i]);
+                   GetPer(list, k + 1, m);
+                   Swap(ref list[k], ref list[i]);
+            }
+    }
+
+    static void Main()
+    {
+        string str = "sagiv";
+        char[] arr = str.ToCharArray();
+        GetPer(arr);
+    }
+}
